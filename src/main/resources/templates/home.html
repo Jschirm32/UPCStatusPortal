@@ -1,0 +1,273 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>UPC Portal</title>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+	crossorigin="anonymous" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.buttonload {
+	background-color: grey; /* Green background */
+	border: none; /* Remove borders */
+	color: white; /* White text */
+	padding: 12px 24px; /* Some padding */
+	font-size: 16px; /* Set a font-size */
+}
+
+/* Add a right margin to each icon */
+.fa {
+	margin-left: -12px;
+	margin-right: 8px;
+}
+
+body {
+	font-family: Arial;
+	margin: 0;
+}
+
+/* Header/Logo Title */
+.header {
+	padding: 2px;
+	text-align: center;
+	background: #2C2929;
+	color: white;
+	font-size: 12px;
+}
+
+#brands {
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#brands td, #brands th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+#brands tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#brands tr:hover {
+	background-color: #ddd;
+}
+
+.right {
+	float: right;
+	padding: 10px;
+}
+
+#brands th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #04AA6D;
+	color: white;
+}
+
+#products {
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#products td, #products th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+#products tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#products tr:hover {
+	background-color: #ddd;
+}
+
+.right {
+	float: right;
+	padding: 10px;
+}
+
+#products th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #04AA6D;
+	color: white;
+}
+</style>
+
+<script>
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js">
+</script>
+<script type="text/javascript" language="javascript"
+	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script language="javascript" type="text/javascript">
+	$(document).ready(function() {
+		$('#products').DataTable();
+	});
+</script>
+</head>
+<body>
+	<div class="header">
+		<h1>UPC Portal</h1>
+	</div>
+	<div class="right">
+		<!-- <form method="get" action="/">
+			<button border="opx">
+				<i class="fa fa-refresh fa-spin" style="font-size:24px;color:green"></i>
+			</button>
+		</form> -->
+		<a href="/"><i class="fa fa-refresh fa-spin"
+			style="font-size: 24px; color: blue"></i></a>
+	</div>
+	<h6 style="color: red">
+		<span th:text="${message}" />
+	</h6>
+	<h3>Next Available UPC</h3>
+	<table id="brands">
+		<tr>
+			<th>Brand Name</th>
+			<th>Company Prefix</th>
+			<th>Next UPC</th>
+			<th>Total Available UPC</th>
+		</tr>
+		<tr th:each="brand: ${brands}">
+			<td th:text="${brand.name}" />
+			<td th:text="${brand.companyPrefix}" />
+			<td th:text="${brand.upcCode}" />
+			<!-- <td th:text="${brand.totalUpcCode}" /> -->
+			<td
+				th:style="${brand.upcThreshold} == 1 ? 'color: red' : 'color: black'"
+				th:text="${brand.totalUpcCode}" />
+		</tr>
+
+	</table>
+	<br />
+	<br />
+	<div>
+		<form method="GET" action="/brand">
+			<label>Select Brand to See recent 10 products : </label> <select
+				name="name" onchange="this.form.submit()">
+				<option value="ASTRAL" th:selected="${brandName} == ASRTAL">ASTRAL</option>
+				<option value="LYS" th:selected="${brandName} == LYS">LYS</option>
+				<option value="BUTTER_LONDON"
+					th:selected="${brandName} == BUTTER_LONDON">BUTTER LONDON</option>
+			</select>
+		</form>
+	</div>
+	<div>
+		<h4>
+			Recent 10 products for Brand <span th:text="${brandName}" />
+		</h4>
+	</div>
+	<table id="products">
+		<tr>
+			<th onclick="sortTable(0)">SKU ID</th>
+			<th onclick="sortTable(1)">Brand Name</th>
+			<th onclick="sortTable(2)">Description</th>
+			<!-- <th>Company Prefix</th> -->
+			<th onclick="sortTable(3)">UPC Code</th>
+		</tr>
+		<!-- <tr>
+			<td>Supernova Glitter Peel Off</td>
+			<td>12345678890</td>
+			<td>$100</td>
+		</tr> -->
+		<tr th:each="prod: ${products}">
+			<td th:text="${prod.skuId}" />
+			<td th:text="${prod.brandName}" />
+			<td th:text="${prod.description}" />
+			<!-- <td th:text="${prod.companyPrefix}" /> -->
+			<td th:text="${prod.upcCode}" />
+		</tr>
+	</table>
+	<div class="form-group row">
+		<form method="POST" th:action="@{/upload-csv-file}"
+			enctype="multipart/form-data">
+			<div class="form-group mt-3">
+				<span><label for="file">Upload new UPC Codes :</label> <input
+					type="file" name="file" class="form-control-file" id="file"
+					accept=".csv"></span>
+			</div>
+			<button type="submit" class="btn btn-primary">Upload</button>
+		</form>
+
+		<form method="POST" th:action="@{/upload-existing-csv-file}"
+			enctype="multipart/form-data">
+			<div class="form-group mt-3">
+				<span><label for="file">Upload existing UPC code
+						details :</label> <input type="file" name="file" class="form-control-file"
+					id="file" accept=".csv"></span>
+			</div>
+			<button type="submit" class="btn btn-primary">Upload</button>
+		</form>
+	</div>
+
+	<script>
+		function sortTable(n) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("products");
+			switching = true;
+			//Set the sorting direction to ascending:
+			dir = "asc";
+			/*Make a loop that will continue until
+			no switching has been done:*/
+			while (switching) {
+				//start by saying: no switching is done:
+				switching = false;
+				rows = table.rows;
+				/*Loop through all table rows (except the
+				first, which contains table headers):*/
+				for (i = 1; i < (rows.length - 1); i++) {
+					//start by saying there should be no switching:
+					shouldSwitch = false;
+					/*Get the two elements you want to compare,
+					one from current row and one from the next:*/
+					x = rows[i].getElementsByTagName("TD")[n];
+					y = rows[i + 1].getElementsByTagName("TD")[n];
+					/*check if the two rows should switch place,
+					based on the direction, asc or desc:*/
+					if (dir == "asc") {
+						if (x.innerHTML.toLowerCase() > y.innerHTML
+								.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					} else if (dir == "desc") {
+						if (x.innerHTML.toLowerCase() < y.innerHTML
+								.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+				if (shouldSwitch) {
+					/*If a switch has been marked, make the switch
+					and mark that a switch has been done:*/
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					//Each time a switch is done, increase this count by 1:
+					switchcount++;
+				} else {
+					/*If no switching has been done AND the direction is "asc",
+					set the direction to "desc" and run the while loop again.*/
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
