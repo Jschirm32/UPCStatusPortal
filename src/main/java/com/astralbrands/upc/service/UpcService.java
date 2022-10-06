@@ -5,6 +5,9 @@ import java.util.List;
 import com.astralbrands.upc.dto.Brand;
 import com.astralbrands.upc.dto.Product;
 
+/*
+	Interface for functions to be defined in another class
+ */
 public interface UpcService {
 
 	public default List<Product> getRecentProducts(String brand) throws Exception {

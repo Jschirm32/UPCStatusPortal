@@ -43,6 +43,9 @@ public class PortalController {
 		return displayHomePage(map, "LYS");
 	}
 
+	/*
+
+	 */
 	private ModelAndView displayHomePage(ModelAndView map, String brand) {
 		List<Product> list;
 		List<Brand> brands;
@@ -77,7 +80,7 @@ public class PortalController {
 
 		// validate file
 		if (file.isEmpty()) {
-			log.info(" file is emptyo:" + file.getName());
+			log.info(" file is empty:" + file.getName());
 			map.addObject("message", "Please select a CSV file to upload.");
 			map.addObject("status", false);
 		} else {
@@ -136,7 +139,7 @@ public class PortalController {
 
 		// validate file
 		if (file.isEmpty()) {
-			log.info(" file is emptyo:" + file.getName());
+			log.info(" file is empty:" + file.getName());
 			map.addObject("message", "Please select a CSV file to upload.");
 			map.addObject("status", false);
 		} else {
@@ -179,7 +182,7 @@ public class PortalController {
 							descIndex1 = i;
 						}
 					}
-					log.info(" product lenth :"+products.length);
+					log.info(" product length :"+products.length);
 					if (!header && skuIdIndex != -1 && upcCodeIndex != -1 && descIndex != -1) {
 						Product product = new Product();
 						product.setSkuId(products[skuIdIndex]);

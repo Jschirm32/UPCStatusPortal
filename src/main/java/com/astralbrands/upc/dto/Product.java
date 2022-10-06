@@ -1,5 +1,11 @@
 package com.astralbrands.upc.dto;
 
+/*
+	Class for Getter/Setter methods for
+	Multiple variables initialized to retrieve
+	or re-assign values associated with a particular
+	product
+ */
 public class Product {
 	
 	private String brandName;
@@ -55,6 +61,9 @@ public class Product {
 		this.status = status;
 	}
 
+	/*
+		Formats an SQL query to retrieve a products' information
+	 */
 	@Override
 	public String toString() {
 		return "Product [brandName=" + brandName + ", description=" + description + ", upcCode=" + upcCode + ", skuId="

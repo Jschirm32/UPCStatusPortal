@@ -2,6 +2,12 @@ package com.astralbrands.upc.util;
 
 import java.util.List;
 
+/*
+	Interface for multiple static String variables
+	containing different SQL queries to be used by
+	other classes in the program to interact with
+	the 'x3' and 'bitBoot' databases
+ */
 public interface APPConstants {
 
 	static final String SELECT_PRODUCT_QUERY = "SELECT TOP 10 SKU_ID, BRAND_NAME, DESCRIPTION,COMPANY_PREFIX,UPC_CODE FROM #table WHERE STATUS =1 ORDER BY  UPC_CODE DESC ;";

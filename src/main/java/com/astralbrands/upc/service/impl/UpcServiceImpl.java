@@ -12,6 +12,14 @@ import com.astralbrands.upc.dto.Brand;
 import com.astralbrands.upc.dto.Product;
 import com.astralbrands.upc.service.UpcService;
 
+/*
+	Implementation of UpcService interface
+	Object of the UpcRepository class to connect
+	and interact with databases ||| Functions defined
+	retrieve list of available/recent products and two
+	other functions to execute queries to upload a products'
+	information to the bitBoot DB
+ */
 @Service
 public class UpcServiceImpl implements UpcService {
 	

@@ -31,10 +31,12 @@ public class UpcRepository implements APPConstants {
 	
 	Logger log = LoggerFactory.getLogger(UpcRepository.class);
 
+	// DB Object to interact with the bitBoot DB
 	@Autowired
 	@Qualifier("bitBootDataSource")
 	private DataSource dataSource;
 
+	// DB Object to interact with the x3 DB
 	@Autowired
 	@Qualifier("x3DataSource")
 	private DataSource x3DataSource;
@@ -115,7 +117,7 @@ public class UpcRepository implements APPConstants {
 				log.info(" Nom of row affected  " + count);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error(" erro while running query");
+				log.error(" error while running query");
 			}
 		}
 	}
@@ -138,10 +140,10 @@ public class UpcRepository implements APPConstants {
 					statement.addBatch(query);
 				}
 				int[] count = statement.executeBatch();
-				log.info(" Nom of row affected  " + count.length);
+				log.info(" Number of rows affected  " + count.length);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error(" erro while running query");
+				log.error(" error while running query");
 			}
 		}
 
@@ -173,6 +175,9 @@ public class UpcRepository implements APPConstants {
 		return query.replace("#prefix", getCmpPrefix(brand));
 	}
 
+	/*
+
+	 */
 	public List<Brand> getAllAvailableUpc() {
 
 		List<String> queries = BRAND_TABLE.stream().map(table -> {
@@ -188,6 +193,7 @@ public class UpcRepository implements APPConstants {
 			}
 		}).collect(Collectors.toCollection(LinkedList::new));
 		brands = checkUpcCodes(brands);
+		System.out.println("This is " + brands);
 		return brands;
 	}
 
@@ -203,7 +209,7 @@ public class UpcRepository implements APPConstants {
 
 		String table = getTableName(brand.getName());
 		String updateQuery = getUpdateQuery(product, brand.getUpcCode(), table);
-		log.info(" updated used upc code to bitboot, upc code :" + brand.getUpcCode());
+		log.info(" updated used upc code to bitBoot, upc code :" + brand.getUpcCode());
 		executeQuery(updateQuery);
 		String query = SELECT_AVALABLE_NEXT_PRODUCT_QUERY.replace("#upc", brand.getUpcCode());
 		query = query.replace("#table", table);
@@ -249,6 +255,7 @@ public class UpcRepository implements APPConstants {
 			return null;
 		}
 		String query = CHECK_UPC_IN_X3_QUERY.replace("#upc", brand.getUpcCode());
+		System.out.println("Brand is " + brand);
 		ResultSet rs = runQueryX3(query);
 		Product prod = null;
 		try {
@@ -261,7 +268,7 @@ public class UpcRepository implements APPConstants {
 				prod.setUpcCode(brand.getUpcCode());
 			}
 			if (prod != null) {
-				System.out.println("upc code is exist, please use other upc code # " + prod);
+				System.out.println("upc code doesn't exist, please use other upc code # " + prod);
 				return prod;
 			} else {
 				System.out.println("upc code does not exist");

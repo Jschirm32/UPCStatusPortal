@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/*
+	Class containing a list of three Astral brands
+	and the corresponding DB table names for each brand
+ */
 public class AppUtil {
 	public static Map<String, String> BRAND_TABLE_NAME = new HashMap<>();
 	private static List<String> BRAND_NAME = new ArrayList<>();
 	static {
 		BRAND_TABLE_NAME.put("LYS", "LYS_UPC_CODE");
 		BRAND_TABLE_NAME.put("ASTRAL", "ASTRAL_UPC_CODE");
-		BRAND_TABLE_NAME.put("BUTTER_LONDON", "BUTTERLONDON_UPC_CODE");
-		BRAND_TABLE_NAME.put("BUTTER", "BUTTERLONDON_UPC_CODE");
+//		BRAND_TABLE_NAME.put("BUTTER_LONDON", "BUTTERLONDON_UPC_CODE");
+		BRAND_TABLE_NAME.put("BUTTER", "BUTTER_UPC_CODE");
 		BRAND_NAME.add("LYS");
 		BRAND_NAME.add("ASTRAL");
 		BRAND_NAME.add("BUTTER");
@@ -22,6 +26,9 @@ public class AppUtil {
 	public static List<String> getBrands() {
 		return BRAND_NAME;
 	}
+
+
+	//	Returns the brand name for the current file being processed
 
 	public static String getBrand(String file) {
 

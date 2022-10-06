@@ -2,6 +2,9 @@ package com.astralbrands.upc.dto;
 
 import com.opencsv.bean.CsvBindByName;
 
+/*
+	Class not used
+ */
 public class ProductCsv {
 
 	@CsvBindByName(column = "GS1CompanyPrefix")
