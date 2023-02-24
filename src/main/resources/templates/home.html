@@ -147,6 +147,7 @@ body {
 			<td
 				th:style="${brand.upcThreshold} == 1 ? 'color: red' : 'color: black'"
 				th:text="${brand.totalUpcCode}" />
+
 		</tr>
 
 	</table>
@@ -265,6 +266,13 @@ body {
 						switching = true;
 					}
 				}
+			}
+		}
+	</script>
+	<script>
+		function checkUpcCount(n) {
+			if(n < 150) {
+
 			}
 		}
 	</script>

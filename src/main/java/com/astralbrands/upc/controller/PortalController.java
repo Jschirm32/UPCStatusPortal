@@ -50,8 +50,12 @@ public class PortalController {
 		List<Product> list;
 		List<Brand> brands;
 		try {
+			String message;
 			list = upcService.getRecentProducts(brand);
 			brands = upcService.getAllAvailableUpc();
+			for(Brand brand2 : brands) {
+
+			}
 			log.info("list : " + list);
 			log.info(": " + brands);
 			map.addObject("brands", brands);

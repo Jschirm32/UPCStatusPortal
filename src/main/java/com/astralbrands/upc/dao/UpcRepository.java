@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
+import com.astralbrands.upc.service.EmailNotification;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class UpcRepository implements APPConstants {
 	@Autowired
 	@Qualifier("x3DataSource")
 	private DataSource x3DataSource;
+
+	@Autowired
+	EmailNotification emailNotification;
 
 	private Connection connection;
 
@@ -83,7 +87,7 @@ public class UpcRepository implements APPConstants {
 				return statement.executeQuery(sql);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error(" erro while running query");
+				log.error(" error while running query");
 			}
 		}
 		throw new RuntimeException("Datasource is null");
@@ -143,8 +147,7 @@ public class UpcRepository implements APPConstants {
 				log.info(" Number of rows affected  " + count.length);
 			} catch (Exception e) {
 				e.printStackTrace();
-				log.error(" error while running query");
-			}
+				log.error(" error while running query");}
 		}
 
 	}
@@ -176,7 +179,7 @@ public class UpcRepository implements APPConstants {
 	}
 
 	/*
-
+	 *	USE FOR THE EMAIL NOTIFICATION SYSTEM
 	 */
 	public List<Brand> getAllAvailableUpc() {
 
@@ -250,6 +253,7 @@ public class UpcRepository implements APPConstants {
 		return brand;
 	}
 
+	//---------USE FOR REFERENCING THE TOTAL UPC COUNT FOR EACH BRAND------------
 	private Product isUpcAvailableInX3(Brand brand) {
 		if (StringUtils.isEmpty(brand.getUpcCode())) {
 			return null;
@@ -313,6 +317,9 @@ public class UpcRepository implements APPConstants {
 				brand.setName(result.getString("BRAND_NAME"));
 				brand.setUpcCode(result.getString("UPC_CODE"));
 				int upcCount = result.getInt("UPC_COUNT");
+				if(upcCount < 150) {
+					emailNotification.sendEmailUpc(brand, upcCount);
+				}
 				brand.setTotalUpcCode(upcCount);
 				if (upcCount < upcThreshold) {
 					brand.setUpcThreshold(1);
@@ -326,6 +333,10 @@ public class UpcRepository implements APPConstants {
 		}
 		return null;
 	}
+
+//	private int getUpcCount() {
+//		ResultSet rs = runQuery()
+//	}
 
 	public void uploadProductToDb(String brand, List<Product> product) {
 		if (product == null) {
