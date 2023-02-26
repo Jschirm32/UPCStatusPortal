@@ -51,11 +51,6 @@ public class EmailNotification {
     @Value("${smtp.to}")
     private String toList;
 
-    @Autowired
-    UpcRepository upcRepository;
-
-
-    Brand brand;
 
     @PostConstruct
     public void init() {
