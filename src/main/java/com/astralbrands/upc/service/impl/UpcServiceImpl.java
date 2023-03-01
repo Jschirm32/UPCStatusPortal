@@ -25,8 +25,6 @@ public class UpcServiceImpl implements UpcService {
 	
 	Logger log = LoggerFactory.getLogger(UpcServiceImpl.class);
 
-	
-	@Autowired
 	private UpcRepository upcRepository;
 	
 	@Override

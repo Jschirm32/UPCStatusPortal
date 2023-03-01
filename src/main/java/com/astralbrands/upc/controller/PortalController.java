@@ -39,7 +39,7 @@ public class PortalController {
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView homePage() {
 		log.info("home page");
-		ModelAndView map = new ModelAndView("home");
+		ModelAndView map = new ModelAndView("index");
 		return displayHomePage(map, "LYS");
 	}
 
@@ -53,9 +53,9 @@ public class PortalController {
 			String message;
 			list = upcService.getRecentProducts(brand);
 			brands = upcService.getAllAvailableUpc();
-			for(Brand brand2 : brands) {
-
-			}
+//			for(Brand brand2 : brands) {
+//
+//			}
 			log.info("list : " + list);
 			log.info(": " + brands);
 			map.addObject("brands", brands);
@@ -72,15 +72,15 @@ public class PortalController {
 	}
 
 	@RequestMapping(value = { "/brand" }, method = RequestMethod.GET)
-	public ModelAndView displayBrandRecentData(@RequestParam("name") String brand) {
+	public ModelAndView displayBrandRecentData(@RequestParam("brand") String brand) {
 		log.info("display recent for " + brand);
-		ModelAndView map = new ModelAndView("home");
+		ModelAndView map = new ModelAndView("index");
 		return displayHomePage(map, brand);
 	}
 
 	@PostMapping("/upload-csv-file")
 	public ModelAndView uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) {
-		ModelAndView map = new ModelAndView("home");
+		ModelAndView map = new ModelAndView("index");
 
 		// validate file
 		if (file.isEmpty()) {
@@ -139,7 +139,7 @@ public class PortalController {
 
 	@PostMapping("/upload-existing-csv-file")
 	public ModelAndView uploadExistingBrandRecord(@RequestParam("file") MultipartFile file, Model model) {
-		ModelAndView map = new ModelAndView("home");
+		ModelAndView map = new ModelAndView("index");
 
 		// validate file
 		if (file.isEmpty()) {
